@@ -43,6 +43,42 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Resume Maker API is running',
+    version: '1.0.0',
+    status: 'active',
+    endpoints: {
+      health: '/api/health',
+      test: '/api/test',
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile'
+      },
+      templates: {
+        all: 'GET /api/templates',
+        free: 'GET /api/templates/free',
+        premium: 'GET /api/templates/premium'
+      },
+      resumes: {
+        create: 'POST /api/resumes',
+        getAll: 'GET /api/resumes',
+        getOne: 'GET /api/resumes/:id',
+        update: 'PUT /api/resumes/:id',
+        delete: 'DELETE /api/resumes/:id'
+      },
+      payments: {
+        createQR: 'POST /api/payments/create-qr',
+        verify: 'POST /api/payments/verify-qr',
+        status: 'GET /api/payments/status/:paymentId',
+        purchased: 'GET /api/payments/purchased'
+      }
+    }
+  });
+});
+
 // Error middleware
 app.use(notFound);
 app.use(errorMiddleware);
