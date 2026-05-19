@@ -4,7 +4,8 @@ const paymentSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true  // Add index for faster user queries
   },
   templateId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +33,8 @@ const paymentSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['pending', 'success', 'failed'],
-    default: 'pending'
+    default: 'pending',
+    index: true  // Index for querying by status
   },
   paymentMethod: {
     type: String,
@@ -45,10 +47,9 @@ const paymentSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes
+// Create compound index for common queries
+// This is NOT a duplicate because it's a compound index on two fields
 paymentSchema.index({ userId: 1, createdAt: -1 });
-paymentSchema.index({ orderId: 1 });
-paymentSchema.index({ paymentId: 1 });
 
 const Payment = mongoose.model('Payment', paymentSchema);
 export default Payment;
