@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema(
 
     resetPasswordExpiry: {
       type: Date
+    },
+
+    isGoogleUser: {
+      type: Boolean,
+      default: false
     }
   },
   {

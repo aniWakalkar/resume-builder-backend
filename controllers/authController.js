@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
+import { verifyGoogleToken } from '../middleware/googleAuth.js';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -106,6 +107,50 @@ export const getProfile = async (req, res, next) => {
       user
     });
   } catch (error) {
+    next(error);
+  }
+};
+
+
+// Add this new function for Google login
+export const googleAuth = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    
+    if (!token) {
+      return res.status(400).json({ message: 'Google token is required' });
+    }
+    
+    // Verify Google token
+    const googleUser = await verifyGoogleToken(token);
+    
+    // Check if user exists
+    let user = await User.findOne({ email: googleUser.email });
+    
+    if (!user) {
+      // Create new user if doesn't exist
+      user = await User.create({
+        name: googleUser.name,
+        email: googleUser.email,
+        password: Math.random().toString(36).slice(-16), // Random password for Google users
+        isGoogleUser: true,
+      });
+      console.log('New user created via Google:', googleUser.email);
+    }
+    
+    // Generate JWT token
+    const jwtToken = generateToken(user._id);
+    
+    res.json({
+      success: true,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isPremium: user.isPremium,
+      token: jwtToken,
+    });
+  } catch (error) {
+    console.error('Google auth error:', error);
     next(error);
   }
 };
