@@ -21,6 +21,10 @@ app.use(cors({
   origin: process.env.DEVELOPMENT_CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
+
+console.log(process.env.LOCAL_CLIENT_URL)
+console.log(process.env.DEVELOPMENT_CLIENT_URL)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
