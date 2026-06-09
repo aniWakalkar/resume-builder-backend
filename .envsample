@@ -1,0 +1,15 @@
+PORT=5000
+
+MONGO_URI=
+MONGO_USER=
+MONGO_PASS=
+
+JWT_SECRET=
+
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+
+BUSINESS_UPI_ID=yourname@okhdfcbank
