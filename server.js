@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import resumeRoutes from './routes/resumeRoutes.js';
 import templateRoutes from './routes/templateRoutes.js';
 import qrPaymentRoutes from './routes/qrPaymentRoutes.js';
+import seedRoutes from './routes/seedRoutes.js';
 import { errorMiddleware, notFound } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/payments', qrPaymentRoutes);
+app.use('/api', seedRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

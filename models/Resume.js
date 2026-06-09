@@ -9,70 +9,101 @@ const resumeSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    default: 'My Resume'
+    default: 'Untitled Resume'
   },
   templateId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Template',
     required: true
   },
+  templateSlug: {
+    type: String,
+    default: ''
+  },
+  templateName: {
+    type: String,
+    default: ''
+  },
   isPremiumTemplate: {
     type: Boolean,
     default: false
   },
+  experienceType: {
+    type: String,
+    enum: ['fresher', 'experienced'],
+    default: 'fresher'
+  },
   personalInfo: {
-    fullName: { type: String, required: true },
-    jobTitle: String,
-    email: { type: String, required: true },
-    phone: String,
-    location: String,
-    linkedin: String,
-    portfolio: String,
-    summary: String
+    fullName: { type: String, default: '' },
+    email: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    address: { type: String, default: '' },
+    linkedin: { type: String, default: '' },
+    portfolio: { type: String, default: '' },
+    profileSummary: { type: String, default: '' }
   },
   education: [{
-    institution: { type: String, required: true },
-    degree: { type: String, required: true },
-    fieldOfStudy: String,
-    startDate: String,
-    endDate: String,
-    gpa: String,
-    description: String
+    institution: { type: String, default: '' },
+    degree: { type: String, default: '' },
+    fieldOfStudy: { type: String, default: '' },
+    startDate: { type: String, default: '' },
+    endDate: { type: String, default: '' },
+    current: { type: Boolean, default: false },
+    grade: { type: String, default: '' },
+    description: { type: String, default: '' }
   }],
   experience: [{
-    company: { type: String, required: true },
-    position: { type: String, required: true },
-    location: String,
-    startDate: { type: String, required: true },
-    endDate: String,
+    company: { type: String, default: '' },
+    position: { type: String, default: '' },
+    location: { type: String, default: '' },
+    startDate: { type: String, default: '' },
+    endDate: { type: String, default: '' },
     current: { type: Boolean, default: false },
-    responsibilities: [String]
+    description: { type: String, default: '' },
+    achievements: [{ type: String }]
   }],
-  skills: {
-    technical: [String],
-    soft: [String],
-    languages: [{ name: String, proficiency: String }]
-  },
+  skills: [{
+    name: { type: String, default: '' },
+    level: { type: String, default: 'Intermediate' },
+    category: { type: String, default: 'Technical' }
+  }],
   projects: [{
-    name: { type: String, required: true },
-    description: String,
-    technologies: [String],
-    link: String,
-    startDate: String,
-    endDate: String
+    name: { type: String, default: '' },
+    description: { type: String, default: '' },
+    technologies: [{ type: String }],
+    link: { type: String, default: '' },
+    startDate: { type: String, default: '' },
+    endDate: { type: String, default: '' }
   }],
   certifications: [{
-    name: String,
-    issuer: String,
-    date: String,
-    link: String
-  }]
+    name: { type: String, default: '' },
+    issuer: { type: String, default: '' },
+    date: { type: String, default: '' },
+    credentialId: { type: String, default: '' },
+    link: { type: String, default: '' }
+  }],
+  languages: [{
+    name: { type: String, default: '' },
+    proficiency: { type: String, default: 'Intermediate' }
+  }],
+  summary: {
+    type: String,
+    default: ''
+  },
+  isPublic: {
+    type: Boolean,
+    default: false
+  },
+  downloadCount: {
+    type: Number,
+    default: 0
+  },
+  viewCount: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 });
 
-// Index for faster queries
-resumeSchema.index({ userId: 1, createdAt: -1 });
-
-const Resume = mongoose.model('Resume', resumeSchema);
-export default Resume;
+export default mongoose.model('Resume', resumeSchema);
